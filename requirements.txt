@@ -1,0 +1,4 @@
+requests>=2.31.0
+psycopg2-binary>=2.9.9
+gspread>=5.12.0
+oauth2client>=4.1.3
