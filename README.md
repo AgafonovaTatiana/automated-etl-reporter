@@ -1,2 +1,92 @@
-# automated-etl-reporter
-Automated ETL pipeline that fetches API data, stores it in PostgreSQL, generates reports, updates Google Sheets, and sends email notifications.
+# Python-скрипт для автоматизации ежедневной отчетности
+
+## Краткое описание проекта:
+Это полноценный ETL-процесс на Python, который:
+- Забирает данные с внешнего API (c параметрами даты и авторизации)
+- Сохраняет их в PostgreSQL (создает таблицу при необходимости)
+- Ведет аккуратное логирование в файлы с ротацией по дате
+- Делает агрегационные SQL-запросы для создания отчета
+- Автоматически обновляет Google Sheet с итоговыми метриками
+- Отправляет email-уведомление о завершении со статусом
+
+## Ключевые особенности:
+
+- Полностью автоматизированный процесс отчётности
+- Конфигурация через JSON (логины, пароли, ключи)
+- Расчет статистики (попытки, успешные попытки, уникальные пользователи)
+- Поддержка расписания (просто заменить даты — и будет работать в кроне)
+- Поддержка логов с ротацией
+
+## Структура проекта
+```bash
+project/
+├── ETL_Python_Project.py          # Основной скрипт
+├── config.json                    # Конфигурационный файл с ключами/доступами
+├── requirements.txt               # Список зависимостей
+├── logs/                          # Логи выполнения (по дням)
+└── README.md                      # Описание проекта
+```
+## Установка
+1. Клонируйте репозиторий:
+```bash
+git clone https://github.com/ваш-профиль/название-проекта.git
+cd название-проекта
+```
+2. Создайте виртуальное окружение:
+```bash 
+python3 -m venv venv
+source venv/bin/activate
+```
+3. Установите зависимости:
+```bash
+pip install -r requirements.txt
+```
+## Конфигурация
+> Создайте файл config.json со следующим содержанием:
+```json
+{
+  "postgres": {
+    "host": "localhost",
+    "port": 5432,
+    "user": "ваш_пользователь",
+    "password": "ваш_пароль",
+    "database": "ваша_бд"
+  },
+  "google_sheets": {
+    "credentials_path": "path/to/your/service_account.json",
+    "sheet_name": "Your Google Sheet"
+  },
+  "email": {
+    "sender": "ваш_email@example.com",
+    "password": "ваш_пароль",
+    "receiver": "получатель@example.com"
+  }
+}
+```
+
+### Никогда не публикуйте файл config.json в открытом доступе.
+
+## Настройка пути к файлу конфигурации
+В начале основного скрипта нужно указать правильный путь к вашему файлу config.json. Найдите в коде строку:
+```python
+CONFIG_FILE = '/Path/to/your/config/file/config.json'
+```
+и замените её на путь к вашему файлу конфигурации, например:
+```python
+CONFIG_FILE = 'config.json'
+```
+## Запуск
+```bash
+$ python "ETL_Python_Project.py"
+```
+
+## Используемые технологии
+- Python 3
+- PostgreSQL
+- Google Sheets API
+- SMTP (email-уведомления)
+- requests, psycopg2, gspread, oauth2client, logging
+
+
+
+
